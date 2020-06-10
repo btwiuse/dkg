@@ -139,9 +139,15 @@ func (i *DirImage) extractTarEntry(header *tar.Header, input io.Reader) error {
 			return err
 		}
 
-	case tar.TypeLink, tar.TypeSymlink:
+	case tar.TypeSymlink:
+		err = os.Symlink(header.Linkname, path)
+		if err != nil {
+			return err
+		}
+
+	case tar.TypeLink:
 		// TODO currently not implemented
-		fmt.Printf("TODO Skipping file link '%s'\n", header.Name)
+		fmt.Printf("TODO Skipping hardlink '%s' -> '%s'\n", header.Name, header.Linkname)
 		return nil
 
 	default:

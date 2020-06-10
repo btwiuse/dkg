@@ -69,6 +69,9 @@ func (i *TarImage) createTarball(file *os.File, filePaths []string) error {
 					}
 					return i.addDirToTar(relPath, info, tarWriter)
 				}
+				if (info.Mode() & os.ModeSymlink) == os.ModeSymlink {
+					return i.addSymlinkToTar(walkedPath, relPath, info, tarWriter)
+				}
 				if (info.Mode() & os.ModeType) != 0 {
 					return fmt.Errorf("Expected file '%s' to be a regular file", walkedPath)
 				}
@@ -93,7 +96,7 @@ func (i *TarImage) addDirToTar(relPath string, info os.FileInfo, tarWriter *tar.
 		panic("Unreachable") // directories excluded above
 	}
 
-	i.infoLog.Write([]byte(fmt.Sprintf("dir: %s\n", relPath)))
+	i.infoLog.Write([]byte(fmt.Sprintf("dir: '%s'\n", relPath)))
 
 	header := &tar.Header{
 		Name:     relPath,
@@ -111,7 +114,7 @@ func (i *TarImage) addFileToTar(fullPath, relPath string, info os.FileInfo, tarW
 		return nil
 	}
 
-	i.infoLog.Write([]byte(fmt.Sprintf("file: %s\n", relPath)))
+	i.infoLog.Write([]byte(fmt.Sprintf("file: '%s'\n", relPath)))
 
 	file, err := os.Open(fullPath)
 	if err != nil {
@@ -135,6 +138,29 @@ func (i *TarImage) addFileToTar(fullPath, relPath string, info os.FileInfo, tarW
 
 	_, err = io.Copy(tarWriter, file)
 	return err
+}
+
+func (i *TarImage) addSymlinkToTar(fullPath, relPath string, info os.FileInfo, tarWriter *tar.Writer) error {
+	if i.isExcluded(relPath) {
+		return nil
+	}
+
+	target, err := os.Readlink(fullPath)
+	if err != nil {
+		return err
+	}
+
+	i.infoLog.Write([]byte(fmt.Sprintf("symlink: '%s' -> '%s'\n", relPath, target)))
+
+	header := &tar.Header{
+		Name:     relPath,
+		Linkname: target,
+		Mode:     0777,        // static
+		ModTime:  time.Time{}, // static
+		Typeflag: tar.TypeSymlink,
+	}
+
+	return tarWriter.WriteHeader(header)
 }
 
 func (i *TarImage) isExcluded(relPath string) bool {
