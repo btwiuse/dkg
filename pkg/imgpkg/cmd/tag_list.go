@@ -4,7 +4,7 @@ import (
 	"github.com/cppforlife/go-cli-ui/ui"
 	uitable "github.com/cppforlife/go-cli-ui/ui/table"
 	regname "github.com/google/go-containerregistry/pkg/name"
-	ctlimg "github.com/k14s/imgpkg/pkg/imgpkg/image"
+	ctlimg "github.com/btwiuse/dkg/pkg/imgpkg/image"
 	"github.com/spf13/cobra"
 )
 

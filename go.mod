@@ -1,4 +1,4 @@
-module github.com/k14s/imgpkg
+module github.com/btwiuse/dkg
 
 go 1.13
 

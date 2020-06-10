@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	ctlimg "github.com/k14s/imgpkg/pkg/imgpkg/image"
+	ctlimg "github.com/btwiuse/dkg/pkg/imgpkg/image"
 	"github.com/spf13/cobra"
 )
 
