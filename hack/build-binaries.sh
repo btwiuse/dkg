@@ -8,8 +8,8 @@ set -e -x -u
 export CGO_ENABLED=0
 repro_flags="-ldflags=-buildid= -trimpath"
 
-GOOS=darwin GOARCH=amd64 go build $repro_flags -o imgpkg-darwin-amd64 ./cmd/imgpkg/...
-GOOS=linux GOARCH=amd64 go build $repro_flags -o imgpkg-linux-amd64 ./cmd/imgpkg/...
-GOOS=windows GOARCH=amd64 go build $repro_flags -o imgpkg-windows-amd64.exe ./cmd/imgpkg/...
+GOOS=darwin  GOARCH=amd64 go build $repro_flags -o dkg-darwin-amd64      .
+GOOS=linux   GOARCH=amd64 go build $repro_flags -o dkg-linux-amd64       .
+GOOS=windows GOARCH=amd64 go build $repro_flags -o dkg-windows-amd64.exe .
 
-shasum -a 256 ./imgpkg-*-amd64*
+shasum -a 256 ./dkg-*-amd64*

@@ -6,10 +6,10 @@ set -e -x -u
 export CGO_ENABLED=0
 repro_flags="-ldflags=-buildid= -trimpath"
 
-go fmt ./cmd/... ./pkg/... ./test/...
+go fmt
 
 # export GOOS=linux GOARCH=amd64
-go build $repro_flags -o imgpkg ./cmd/imgpkg/...
-./imgpkg version
+go build $repro_flags -o dkg .
+./dkg version
 
 echo "Success"
