@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/cppforlife/go-cli-ui/ui"
 	"github.com/btwiuse/dkg/pkg/imgpkg/cmd"
+	"github.com/cppforlife/go-cli-ui/ui"
 )
 
 func main() {

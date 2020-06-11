@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
+	ctlimg "github.com/btwiuse/dkg/pkg/imgpkg/image"
 	"github.com/cppforlife/go-cli-ui/ui"
 	regname "github.com/google/go-containerregistry/pkg/name"
-	ctlimg "github.com/btwiuse/dkg/pkg/imgpkg/image"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 )
