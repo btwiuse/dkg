@@ -47,7 +47,7 @@ func NewImgpkgCmd(o *ImgpkgOptions) *cobra.Command {
 
 	// Last one runs first
 	cobrautil.VisitCommands(cmd, cobrautil.ReconfigureCmdWithSubcmd)
-	cobrautil.VisitCommands(cmd, cobrautil.ReconfigureLeafCmd)
+	// cobrautil.VisitCommands(cmd, cobrautil.ReconfigureLeafCmd)
 
 	cobrautil.VisitCommands(cmd, cobrautil.WrapRunEForCmd(func(*cobra.Command, []string) error {
 		o.UIFlags.ConfigureUI(o.ui)
