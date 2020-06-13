@@ -2,8 +2,8 @@ package image
 
 import (
 	"archive/tar"
-	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -146,12 +146,14 @@ func (i *DirImage) extractTarEntry(header *tar.Header, input io.Reader) error {
 		}
 
 	case tar.TypeLink:
-		// TODO currently not implemented
-		fmt.Printf("TODO Skipping hardlink '%s' -> '%s'\n", header.Name, header.Linkname)
-		return nil
+		err = os.Link(filepath.Join(i.dirPath, header.Linkname), path)
+		if err != nil {
+			return err
+		}
 
 	default:
-		return fmt.Errorf("Unsupported tar entry type '%c' for file '%s'", header.Typeflag, header.Name)
+		log.Printf("Unsupported tar entry type '%c' for file '%s'", header.Typeflag, header.Name)
+		return nil
 	}
 
 	if runtime.GOOS != "windows" && i.shouldChown {
